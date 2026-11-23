@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noteful Reader</title>
+<style>
+  :root { --bg:#f6f5f2; --card:#fff; --ink:#1c1b19; --muted:#6f6b63; --line:#e2ded5; --accent:#2f6f5e; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  header { background:#fff; border-bottom:1px solid var(--line); padding:22px 28px 18px; position:sticky; top:0; z-index:2; }
+  .top { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+  h1 { margin:0; font-size:22px; font-weight:650; letter-spacing:-.2px; }
+  .stats { color:var(--muted); font-size:13px; }
+  .bar { margin-top:16px; display:flex; gap:10px; align-items:center; }
+  input[type=search] { flex:1; max-width:460px; padding:10px 14px; border:1px solid var(--line); border-radius:9px; font-size:14px; background:#fbfaf8; outline:none; }
+  input[type=search]:focus { border-color:var(--accent); background:#fff; }
+  button { padding:10px 16px; border:1px solid var(--line); background:#fff; border-radius:9px; cursor:pointer; font-size:14px; }
+  button:hover { border-color:var(--accent); color:var(--accent); }
+  main { padding:24px 28px 48px; max-width:1400px; margin:0 auto; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:20px; }
+  a.card { display:block; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; text-decoration:none; color:inherit; transition:transform .12s,box-shadow .12s; }
+  a.card:hover { transform:translateY(-3px); box-shadow:0 10px 26px rgba(0,0,0,.09); }
+  .cover { height:230px; background:#ece9e2; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .cover img { width:100%; height:100%; object-fit:cover; object-position:top center; }
+  .cover .ph { color:#b3ada2; font-size:30px; }
+  .meta { padding:12px 13px 14px; }
+  .title { font-weight:600; font-size:14px; line-height:1.35; height:38px; overflow:hidden; }
+  .sub { margin-top:8px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; gap:8px; }
+  .folder { display:inline-block; background:#eef3ef; color:var(--accent); border-radius:5px; padding:1px 6px; font-size:11px; }
+  .err { color:#a33; font-size:12px; margin-top:6px; }
+  .empty { color:var(--muted); padding:40px 0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>Noteful Reader</h1>
+    <span class="stats">{{ notes|length }} notebooks · {{ '{:,}'.format(total_pages) }} pages · {{ '%.0f'|format(total_size/1048576) }} MB · read-only</span>
+  </div>
+  <form class="bar" method="get" action="/">
+    <input type="search" name="q" value="{{ query }}" placeholder="Filter notebooks by name or folder…" autofocus>
+    <button type="submit">Search</button>
+    {% if query %}<a href="/" style="color:var(--muted);font-size:13px">clear</a>{% endif %}
+  </form>
+</header>
+<main>
+  {% if not notes %}<div class="empty">No notebooks match “{{ query }}”.</div>{% endif %}
+  <div class="grid">
+  {% for n in notes %}
+    <a class="card" href="/note/{{ n.id }}" title="{{ n.filename }}">
+      <div class="cover">
+        {% if n.cover %}<img loading="lazy" src="/cover/{{ n.id }}.jpg" alt="">{% else %}<span class="ph">◇</span>{% endif %}
+      </div>
+      <div class="meta">
+        <div class="title">{{ n.title }}</div>
+        <div class="sub">
+          <span>{% if n.folder %}<span class="folder">{{ n.folder }}</span>{% endif %}</span>
+          <span>{{ '{:,}'.format(n.pages) }} p</span>
+        </div>
+        {% if n.error %}<div class="err">{{ n.error }}</div>{% endif %}
+      </div>
+    </a>
+  {% endfor %}
+  </div>
+</main>
+</body>
+</html>

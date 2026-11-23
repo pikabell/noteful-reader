@@ -1,0 +1,12 @@
+# Personal notebook data — never commit or upload
+*.noteful
+Noteful Backup*/
+
+# Generated caches
+cache/
+__pycache__/
+*.pyc
+
+# OS cruft
+.DS_Store
+Thumbs.db
