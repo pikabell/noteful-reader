@@ -50,11 +50,15 @@ class Catalog:
         self.root = root
         self.notes = OrderedDict()
         self.paths = {}
+        self.error = None
         self.scan()
 
     def scan(self):
         if not self.root.is_dir():
-            raise SystemExit("Backup folder not found: %s" % self.root)
+            self.error = ("Backup folder not found: %s. Set NOTEFUL_BACKUP to the "
+                          "folder containing your .noteful files, then restart."
+                          % self.root)
+            return
         files = sorted(self.root.rglob("*.noteful"))
         for path in files:
             rel = str(path.relative_to(self.root))
@@ -195,6 +199,7 @@ def home():
                  or q in n.get("folder", "").lower()]
     notes.sort(key=lambda n: (n["folder"], n["title"].lower()))
     return render_template("home.html", notes=notes, query=q,
+                           catalog_error=CATALOG.error,
                            total_pages=sum(n["pages"] for n in CATALOG.notes.values()),
                            total_size=sum(n["size"] for n in CATALOG.notes.values()))
 
@@ -236,7 +241,8 @@ def cover(nid):
 
 @app.route("/health")
 def health():
-    return {"ok": True, "notes": len(CATALOG.notes),
+    return {"ok": CATALOG.error is None, "error": CATALOG.error,
+            "notes": len(CATALOG.notes),
             "pages": sum(n["pages"] for n in CATALOG.notes.values())}
 
 
@@ -252,6 +258,8 @@ def main():
     url = "http://%s:%d/" % (args.host, args.port)
     print("Noteful reader -> %d notes, %d pages" %
           (len(CATALOG.notes), sum(n["pages"] for n in CATALOG.notes.values())))
+    if CATALOG.error:
+        print("WARNING: " + CATALOG.error)
     print("Open " + url)
     if not args.no_browser:
         import threading
