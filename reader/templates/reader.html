@@ -66,7 +66,8 @@
   const spreadBtn = document.getElementById('spread');
   const fitBtn = document.getElementById('fit');
   const hint = '<span class="hint">←/→ pages · 1/2 layout · +/- zoom · 0 fit · type a page number and press Enter</span>';
-  let page = 0, scale = null, loading = false;
+  {% set start = request.args.get('p', '0')|int %}
+  let page = {{ start if start >= 0 and start < note.pages else 0 }}, scale = null, loading = false;
   let spread = {{ 'true' if request.args.get('spread') in ('1','true','yes') else 'false' }};
 
   function step(){ return spread ? 2 : 1; }
@@ -177,7 +178,7 @@
   });
 
   updateCounter();
-  show(0, true);
+  show(page, true);
 })();
 </script>
 </body>

@@ -25,8 +25,25 @@ NOTEFUL_BACKUP="/path/to/Noteful Backup" ./run.sh
 - **Reader** page with previous/next page, jump-to-page, zoom/fit, and arrow-key navigation.
   Switch between **1 page** and **2 pages** (side-by-side spread) with the button in the
   toolbar or the `2` key. Append `?spread=1` to a note URL to open directly in two-page mode.
+  `?p=221` opens a specific page.
 - Each page is rendered as an SVG showing the **embedded PDF page** (your imported
   textbook / lecture notes) with **handwritten ink, shapes, images and text** layered on top.
+
+## Screenshots — example: Understanding Deep Learning
+
+The examples below use an *Understanding Deep Learning* notebook: the original
+book pages are the embedded PDF background, and the pink marks are annotations
+made in Noteful.
+
+![UDL notebook in two-page spread mode](docs/screenshots/spread.png)
+
+Library filtered to the UDL notebooks:
+
+![Library view filtered to UDL notebooks](docs/screenshots/library.png)
+
+A single annotated page (Chapter 12, Transformers):
+
+![UDL page with handwritten highlights](docs/screenshots/reader.png)
 
 ## How it works
 
