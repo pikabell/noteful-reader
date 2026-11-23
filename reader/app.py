@@ -18,8 +18,11 @@ import threading
 from collections import OrderedDict
 from pathlib import Path
 
-import fitz  # PyMuPDF
-from flask import Flask, Response, abort, g, render_template, request, send_file
+try:  # PyMuPDF >= 1.24 exposes the canonical `pymupdf` name
+    import pymupdf as fitz
+except ImportError:  # older releases only provide `fitz`
+    import fitz
+from flask import Flask, Response, abort, render_template, request, send_file
 
 import format as nf
 from render import render_page

@@ -2,10 +2,13 @@
 *.noteful
 Noteful Backup*/
 
-# Generated caches
-cache/
+# Python / uv environment
+.venv/
 __pycache__/
 *.pyc
+
+# Generated page cache
+cache/
 
 # OS cruft
 .DS_Store

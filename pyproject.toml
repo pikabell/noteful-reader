@@ -1,0 +1,16 @@
+[project]
+name = "noteful-reader"
+version = "1.0.0"
+description = "A minimal, read-only local web UI for reading Noteful iPad backups on Linux"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "flask>=3.0",
+    "pymupdf>=1.24",
+]
+
+# This project is an app, not an installable library: uv installs only the
+# dependencies listed above into .venv and does not try to build the project.
+[tool.uv]
+package = false
