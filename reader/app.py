@@ -32,7 +32,9 @@ BACKUP = Path(os.environ.get("NOTEFUL_BACKUP",
                              ROOT / "Noteful Backup - 1HWv45ymtAqmA9ZymPGp8uliPhRZSBk0j"))
 CACHE = ROOT / "cache"
 PDF_CACHE = CACHE / "pdf"
+THUMB_CACHE = CACHE / "thumbs"
 PDF_CACHE.mkdir(parents=True, exist_ok=True)
+THUMB_CACHE.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 app.config["MAX_CONTENT_LENGTH"] = 1
@@ -224,6 +226,35 @@ def page_svg(nid, p):
     svg, stats = render_page(report, summary, mm, p, pdf_image(nid))
     return Response(svg, mimetype="image/svg+xml",
                     headers={"Cache-Control": "public, max-age=3600"})
+
+
+@app.route("/thumb/<nid>/<int:p>.png")
+def thumbnail(nid, p):
+    """Small raster preview of one page for the overview grid.
+
+    The full page SVG is composed as usual and rasterized with MuPDF, so ink
+    and images appear in the thumbnail. Results are cached on disk.
+    """
+    info = CATALOG.get(nid)
+    if not info:
+        abort(404)
+    report, summary, mm = load_note(nid)
+    if p < 0 or p >= len(summary["pages"]):
+        abort(404)
+    key = hashlib.sha1(("%s|%d|v2" % (nid, p)).encode("ascii")).hexdigest()
+    target = THUMB_CACHE / (key + ".png")
+    if not target.exists():
+        svg, _ = render_page(report, summary, mm, p, pdf_image(nid))
+        w = summary["pages"][p]["size"][0]
+        doc = fitz.open(stream=svg.encode("utf-8"), filetype="svg")
+        try:
+            pix = doc[0].get_pixmap(matrix=fitz.Matrix(170.0 / w, 170.0 / w), alpha=False)
+            tmp = target.with_suffix(".tmp")
+            tmp.write_bytes(pix.tobytes("png"))
+            tmp.replace(target)
+        finally:
+            doc.close()
+    return send_file(target, mimetype="image/png", conditional=True, max_age=86400)
 
 
 @app.route("/cover/<nid>.jpg")

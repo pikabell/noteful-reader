@@ -62,6 +62,10 @@ NOTEFUL_BACKUP="/path/to/your/Noteful Backup" python reader/app.py
   (`←`/`→`, `Home`/`End`, `+`/`-`, `0`).
 - **One or two pages** — switch with the toolbar button or the `2` key for a side-by-side
   book spread.
+- **Resume where you left off** — the last page of each notebook is remembered.
+- **Page overview** — `Pages` (or `g`) shows a grid of page thumbnails for quick jumps
+  through long books.
+- **Night mode** — `Night` (or `n`) dims/inverts paper for comfortable reading.
 - **Deep links** — `?p=221` opens a specific page, `?spread=1` opens in two-page mode.
 - **On-demand rendering** — large backups (thousands of pages) open quickly; rendered
   PDF pages are cached in `./cache/`.
