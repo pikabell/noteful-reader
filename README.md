@@ -6,6 +6,9 @@ PDF pages together with Noteful handwriting, highlights, shapes, images and text
 
 Your backup is opened read-only — the app never writes to it.
 
+**Android:** an installable PWA with Google Drive sync (fully offline, no server)
+lives in [`android-pwa/`](android-pwa/README.md).
+
 ## Quick start (with uv)
 
 [uv](https://docs.astral.sh/uv/) manages the Python environment and dependencies.

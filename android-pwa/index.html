@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1e1e1c">
+<meta name="description" content="Read Noteful notebooks on Android, synced from Google Drive.">
+<title>Noteful Reader</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="js/pdf.js"></script>
+<script src="js/config.js"></script>
+<script src="js/noteful.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js" defer></script>
+</head>
+<body>
+<div id="app">
+  <!-- LIBRARY -->
+  <section id="library" class="screen">
+    <header class="topbar">
+      <div class="brand">Noteful Reader <span class="tag">Android</span></div>
+      <button id="syncBtn" class="primary" title="Sync notebooks from Google Drive">Sync Drive</button>
+    </header>
+    <div class="searchrow">
+      <input id="search" type="search" placeholder="Filter notebooks…" autocomplete="off">
+      <button id="signOutBtn" class="ghost" title="Sign out of Google">Sign out</button>
+    </div>
+    <p id="status" class="status"></p>
+    <div id="cards" class="cards"></div>
+  </section>
+
+  <!-- READER -->
+  <section id="reader" class="screen hidden">
+    <header class="topbar">
+      <button id="backBtn" class="icon" title="Back to library">←</button>
+      <span id="docTitle" class="doc-title"></span>
+      <span class="grow"></span>
+      <button id="spreadBtn" class="ghost" title="Toggle two-page mode">1 page</button>
+    </header>
+    <div class="readernav">
+      <button id="firstBtn" class="icon" title="First page">⇤</button>
+      <button id="prevBtn" class="icon" title="Previous page">‹</button>
+      <span class="pagecount"><input id="pageNo" type="number" min="1" value="1"><span id="pageRange"></span><span id="pageTotal"></span></span>
+      <button id="nextBtn" class="icon" title="Next page">›</button>
+      <button id="lastBtn" class="icon" title="Last page">⇥</button>
+      <span class="grow"></span>
+      <button id="zoomOut" class="icon" title="Zoom out">−</button>
+      <button id="fitBtn" class="ghost" title="Fit page">Fit</button>
+      <button id="zoomIn" class="icon" title="Zoom in">+</button>
+    </div>
+    <div id="stage" class="stage"><div id="pageWrap" class="pagewrap"></div></div>
+    <div id="readerStatus" class="status reader-status"></div>
+  </section>
+</div>
+</body>
+</html>

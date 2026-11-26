@@ -1,0 +1,16 @@
+{
+  "name": "Noteful Reader",
+  "short_name": "Noteful",
+  "description": "Read Noteful notebooks on Android, synced from Google Drive, fully offline.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f4f1",
+  "theme_color": "#1e1e1c",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
